@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.kingtodo.Adapter.ToDoAdapter;
 import com.example.kingtodo.Model.ToDoModel;
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     private RecyclerView tasksRecyclerView;
     private ToDoAdapter tasksAdapter;
     private FloatingActionButton fab;
-
+    private Button btn;
     private List<ToDoModel> taskList;
 
     @Override
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                 AddNewTask.newInstance().show(getSupportFragmentManager(), AddNewTask.TAG);
             }
         });
+
     }
 
     @Override

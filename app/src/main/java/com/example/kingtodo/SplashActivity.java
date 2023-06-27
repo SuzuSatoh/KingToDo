@@ -34,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
                             // Kiểm tra nếu thanh progress bar chạy hết
                             if (progressStatus == 100) {
                                 // Tạo Intent cho activity mới
-                                Intent i = new Intent(SplashActivity.this, MainActivity.class);
+                                Intent i = new Intent(SplashActivity.this,  SingUp.class);
                                 startActivity(i);
                                 finish();
                             }
