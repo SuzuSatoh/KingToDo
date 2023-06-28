@@ -19,24 +19,29 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("create table users(username TEXT primary key,password TEXT)");
+        //String createTableQuery = "CREATE TABLE user (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT)";
+        //sqLiteDatabase.execSQL(createTableQuery);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("drop table if exists users");
+        onCreate(sqLiteDatabase);
     }
-    public Boolean insertData(String username,String password){
-        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+    public Boolean insertData(String username, String password) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("username",username);
-        values.put("password",password);
-        long result = sqLiteDatabase.insert("user",null,values);
-        if(result==-1) return false;
-        else
+        values.put("username", username);
+        values.put("password", password);
+        long result = sqLiteDatabase.insert("users", null, values); // Update table name to "users"
+        if (result == -1) {
+            return false;
+        } else {
             return true;
+        }
     }
 
-    public Boolean checkusername(String username){
+    public Boolean  checkusername(String username){
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery("select * from users where username=?",new String[]{username});
         if (cursor.getCount()>0)

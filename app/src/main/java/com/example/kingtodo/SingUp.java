@@ -20,6 +20,7 @@ public class SingUp extends AppCompatActivity {
         setContentView(R.layout.activity_sing_up);
         username=findViewById(R.id.username);
         password=findViewById(R.id.password);
+        repassword=findViewById(R.id.repassword);
         singup=findViewById(R.id.singup);
         singin=findViewById(R.id.singin);
         DB=new DBHelper(this);
@@ -40,7 +41,7 @@ public class SingUp extends AppCompatActivity {
                             Boolean insert = DB.insertData(user,pass);
                             if(insert==true){
                                 Toast.makeText(SingUp.this,"Registered Successfully",Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), Login.class);
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
                             }else {
                                 Toast.makeText(SingUp.this,"Registration Failed",Toast.LENGTH_SHORT).show();
