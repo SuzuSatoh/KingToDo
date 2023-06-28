@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:orientation="vertical"
-    android:background="@drawable/hoaanhdao">
+    android:background="@drawable/login"
     tools:context=".Login">
     <TextView
         android:layout_width="match_parent"
@@ -38,7 +38,10 @@
         android:textColorHint="@android:color/black"
         android:background="@drawable/edittextbackground"
         android:layout_marginBottom="30dp"
-        android:paddingLeft="20dp"/>
+        android:paddingLeft="20dp"
+        android:inputType="textPassword"
+         />
+
 
     <Button
         android:layout_width="match_parent"

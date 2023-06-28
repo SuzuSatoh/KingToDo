@@ -41,7 +41,7 @@ public class SingUp extends AppCompatActivity {
                             Boolean insert = DB.insertData(user,pass);
                             if(insert==true){
                                 Toast.makeText(SingUp.this,"Registered Successfully",Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                Intent intent = new Intent(getApplicationContext(), Login.class);
                                 startActivity(intent);
                             }else {
                                 Toast.makeText(SingUp.this,"Registration Failed",Toast.LENGTH_SHORT).show();

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:orientation="vertical"
-    android:background="@drawable/hoaanhdao">
+    android:background="@drawable/signup"
     tools:context=".SingUp">
     <TextView
         android:layout_width="match_parent"
@@ -38,17 +38,21 @@
         android:textColorHint="@android:color/black"
         android:background="@drawable/edittextbackground"
         android:layout_marginBottom="30dp"
-        android:paddingLeft="20dp"/>
+        android:paddingLeft="20dp"
+        android:inputType="textPassword" />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/repassword"
-        android:hint="Confirm Password"
+        android:hint="Password"
         android:textSize="25dp"
         android:textColorHint="@android:color/black"
         android:background="@drawable/edittextbackground"
         android:layout_marginBottom="30dp"
-        android:paddingLeft="20dp"/>
+        android:paddingLeft="20dp"
+        android:inputType="textPassword" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -66,4 +70,8 @@
         android:textStyle="bold"
         android:backgroundTint="@android:color/black"
         android:textColor="@android:color/white"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        />
 </LinearLayout>
