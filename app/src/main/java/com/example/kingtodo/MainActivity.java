@@ -1,15 +1,15 @@
 package com.example.kingtodo;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
-
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kingtodo.Adapter.ToDoAdapter;
 import com.example.kingtodo.Model.ToDoModel;
@@ -20,7 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements DialogCloseListener{
+// MainActivity.java
+public class MainActivity extends AppCompatActivity implements DialogCloseListener {
 
     private DatabaseHandler db;
 
@@ -29,6 +30,9 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     private FloatingActionButton fab;
     private Button btn;
     private List<ToDoModel> taskList;
+
+    private ProgressBar progressBar;
+    private int progressValue = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +45,27 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
         tasksRecyclerView = findViewById(R.id.tasksRecyclerView);
         tasksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        tasksAdapter = new ToDoAdapter(db,MainActivity.this);
+
+        tasksAdapter = new ToDoAdapter(db.getAllTasks(), db, this, new ToDoAdapter.OnItemCheckedChangeListener() {
+            @Override
+            public void onItemCheckedChange(boolean isChecked) {
+                if (isChecked) {
+                    progressValue += 1;
+                } else {
+                    progressValue -= 1;
+                }
+                progressBar.setProgress(progressValue);
+            }
+        });
         tasksRecyclerView.setAdapter(tasksAdapter);
 
-        ItemTouchHelper itemTouchHelper = new
-                ItemTouchHelper(new RecyclerItemTouchHelper(tasksAdapter));
-        itemTouchHelper.attachToRecyclerView(tasksRecyclerView);
+        RecyclerItemTouchHelper itemTouchHelper = new RecyclerItemTouchHelper(tasksAdapter);
+        new ItemTouchHelper(itemTouchHelper).attachToRecyclerView(tasksRecyclerView);
 
         fab = findViewById(R.id.fab);
 
         taskList = db.getAllTasks();
         Collections.reverse(taskList);
-
         tasksAdapter.setTasks(taskList);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -62,13 +75,31 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             }
         });
 
+        progressBar = findViewById(R.id.progressBar2);
+        progressBar.setProgress(progressValue);
+        progressBar.setMax(100);
+
+        progressBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (progressValue < 100) {
+                    progressValue++;
+                }
+                progressBar.setProgress(progressValue);
+            }
+        });
     }
 
     @Override
-    public void handleDialogClose(DialogInterface dialog){
+    public void handleDialogClose(DialogInterface dialog) {
         taskList = db.getAllTasks();
         Collections.reverse(taskList);
         tasksAdapter.setTasks(taskList);
         tasksAdapter.notifyDataSetChanged();
+
+        if (progressValue < 100) {
+            progressValue += 1;
+        }
+        progressBar.setProgress(progressValue);
     }
 }

@@ -19,15 +19,23 @@ import com.example.kingtodo.Utils.DatabaseHandler;
 
 import java.util.List;
 
+// ToDoAdapter.java
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     private List<ToDoModel> todoList;
     private DatabaseHandler db;
     private MainActivity activity;
+    private OnItemCheckedChangeListener listener;
 
-    public ToDoAdapter(DatabaseHandler db, MainActivity activity) {
+    public interface OnItemCheckedChangeListener {
+        void onItemCheckedChange(boolean isChecked);
+    }
+
+    public ToDoAdapter(List<ToDoModel> todoList, DatabaseHandler db, MainActivity activity, OnItemCheckedChangeListener listener) {
+        this.todoList = todoList;
         this.db = db;
         this.activity = activity;
+        this.listener = listener;
     }
 
     @NonNull
@@ -40,8 +48,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        db.openDatabase();
-
         final ToDoModel item = todoList.get(position);
         holder.task.setText(item.getTask());
         holder.task.setChecked(toBoolean(item.getStatus()));
@@ -53,6 +59,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 } else {
                     db.updateStatus(item.getId(), 0);
                 }
+                listener.onItemCheckedChange(isChecked);
             }
         });
     }
