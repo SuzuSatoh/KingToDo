@@ -1,7 +1,9 @@
 package com.example.kingtodo;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -20,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-// MainActivity.java
 public class MainActivity extends AppCompatActivity implements DialogCloseListener {
 
     private DatabaseHandler db;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
     private ProgressBar progressBar;
     private int progressValue = 0;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                     progressValue -= 1;
                 }
                 progressBar.setProgress(progressValue);
+                saveProgressValue(progressValue);
             }
         });
         tasksRecyclerView.setAdapter(tasksAdapter);
@@ -76,8 +79,11 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         });
 
         progressBar = findViewById(R.id.progressBar2);
-        progressBar.setProgress(progressValue);
         progressBar.setMax(100);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        progressValue = getSavedProgressValue();
+        progressBar.setProgress(progressValue);
 
         progressBar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                     progressValue++;
                 }
                 progressBar.setProgress(progressValue);
+                saveProgressValue(progressValue);
             }
         });
     }
@@ -101,5 +108,16 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             progressValue += 1;
         }
         progressBar.setProgress(progressValue);
+        saveProgressValue(progressValue);
+    }
+
+    private void saveProgressValue(int value) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("progressValue", value);
+        editor.apply();
+    }
+
+    private int getSavedProgressValue() {
+        return sharedPreferences.getInt("progressValue", 0);
     }
 }
